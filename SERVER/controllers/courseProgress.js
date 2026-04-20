@@ -64,8 +64,7 @@
 //     }
 
 
-
-       const SubSection = require("../models/Subsection")
+const SubSection = require("../models/SubSection")
 const CourseProgress = require("../models/CourseProgress")
 
 exports.updateCourseProgress = async (req, res) => {

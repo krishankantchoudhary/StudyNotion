@@ -1,9 +1,10 @@
 import React from "react"
+import {lazy,Suspense} from "react"
 
 import Footer from "../components/common/Footer"
 import ContactDetails from "../components/ContactPage/ContactDetails"
 import ContactForm from "../components/ContactPage/ContactForm"
-import ReviewSlider from "../components/common/ReviewSlider"
+const ReviewSlider = lazy(() => import("../components/common/ReviewSlider"));
 
 const Contact = () => {
   return (
@@ -24,7 +25,9 @@ const Contact = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        <ReviewSlider />
+       <Suspense fallback={<div>Loading...</div>}>
+  <ReviewSlider />
+</Suspense>
       </div>
       <Footer />
     </div>

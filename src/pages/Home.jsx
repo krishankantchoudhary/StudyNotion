@@ -1,16 +1,25 @@
 import React from "react";
+import { lazy, Suspense } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import HighlightText from "../components/core/HomePage/HighlightText";
 import CTAButton from "../components/core/HomePage/Button";
 import Banner from "../assets/Images/banner.mp4";
-import CodeBlocks from "../components/core/HomePage/CodeBlocks";
-import TimelineSection from "../components/core/HomePage/TimelineSection";
-import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection";
-import InstructorSection from "../components/core/HomePage/InstructorSection";
-import Footer from "../components/common/Footer";
-import ExploreMore from "../components/core/HomePage/ExploreMore";
-import ReviewSlider from "../components/common/ReviewSlider"
+const CodeBlocks = lazy(() => import("../components/core/HomePage/CodeBlocks"));
+const TimelineSection = lazy(
+  () => import("../components/core/HomePage/TimelineSection"),
+);
+const LearningLanguageSection = lazy(
+  () => import("../components/core/HomePage/LearningLanguageSection"),
+);
+const InstructorSection = lazy(
+  () => import("../components/core/HomePage/InstructorSection"),
+);
+const Footer = lazy(() => import("../components/common/Footer"));
+const ExploreMore = lazy(
+  () => import("../components/core/HomePage/ExploreMore"),
+);
+const ReviewSlider = lazy(() => import("../components/common/ReviewSlider"));
 
 const Home = () => {
   return (
@@ -53,76 +62,81 @@ const Home = () => {
 
         {/* <div className="mx-3 my-12 shadow-blue-200 "> */}
         <div className="w-full mx-3 my-12 shadow-[12px_12px_0_0] shadow-white-50">
-          <video muted loop autoPlay>
+          <video muted controls preload="none">
             <source src={Banner} type="video/mp4" />
           </video>
         </div>
 
         {/*core section 1*/}
         <div>
-          <CodeBlocks
-            position={"lg:flex-row"}
-            heading={
-              <div className="text-4xl font-semibold">
-                Unlock Your
-                <HighlightText text={"coding potential"} />
-                with our online courses
-              </div>
-            }
-            subheading={
-              "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
-            }
-            ctabtn1={{
-              btnText: "Try It Yourself",
-              linkto: "/signup",
-              active: true,
-            }}
-            ctabtn2={{
-              btnText: "Learn More",
-              linkto: "/login",
-              active: false,
-            }}
-            codeblock={`<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
-            codeColor={"text-yellow-25"}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <CodeBlocks
+              position={"lg:flex-row"}
+              heading={
+                <div className="text-4xl font-semibold">
+                  Unlock Your
+                  <HighlightText text={"coding potential"} />
+                  with our online courses
+                </div>
+              }
+              subheading={
+                "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+              }
+              ctabtn1={{
+                btnText: "Try It Yourself",
+                linkto: "/signup",
+                active: true,
+              }}
+              ctabtn2={{
+                btnText: "Learn More",
+                linkto: "/login",
+                active: false,
+              }}
+              codeblock={`<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
+              codeColor={"text-yellow-25"}
+            />
+          </Suspense>
         </div>
 
         {/*core section 2*/}
         <div>
-          <CodeBlocks
-            position={"lg:flex-row-reverse"}
-            heading={
-              <div className="text-4xl font-semibold">
-                Start
-                <HighlightText text={"coding in seconds"} />
-              </div>
-            }
-            subheading={
-              "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
-            }
-            ctabtn1={{
-              btnText: "Continue Lesson",
-              linkto: "/signup",
-              active: true,
-            }}
-            ctabtn2={{
-              btnText: "Learn More",
-              linkto: "/login",
-              active: false,
-            }}
-            codeblock={`<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
-            codeColor={"text-yellow-25"}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <CodeBlocks
+              position={"lg:flex-row-reverse"}
+              heading={
+                <div className="text-4xl font-semibold">
+                  Start
+                  <HighlightText text={"coding in seconds"} />
+                </div>
+              }
+              subheading={
+                "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
+              }
+              ctabtn1={{
+                btnText: "Continue Lesson",
+                linkto: "/signup",
+                active: true,
+              }}
+              ctabtn2={{
+                btnText: "Learn More",
+                linkto: "/login",
+                active: false,
+              }}
+              codeblock={`<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
+              codeColor={"text-yellow-25"}
+            />
+          </Suspense>
         </div>
         {/* CARD SECTION: Explore more ,,,For this we make separate component*/}
-        <ExploreMore/>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ExploreMore />
+        </Suspense>
       </div>
 
       {/*Section 2*/}
 
       <div className="bg-pure-greys-5 text-richblack-700">
         <div className="homepage_bg h-[310px]">
-
           <div className="w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5 mx-auto px-8">
             <div className="h-[160px]"></div>
             <div className="flex flex-row gap-7 text-white">
@@ -158,25 +172,33 @@ const Home = () => {
             </div>
           </div>
 
-          <TimelineSection />
-          <LearningLanguageSection />
+          <Suspense fallback={<div>Loading...</div>}>
+            <TimelineSection />
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <LearningLanguageSection />
+          </Suspense>
         </div>
       </div>
 
       {/*Section 3*/}
 
-      <div className='w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white px-8'>
+      <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white px-8">
+        <Suspense fallback={<div>Loading...</div>}>
+          <InstructorSection />
+        </Suspense>
 
-            <InstructorSection />
-
-            <h2 className='text-center text-4xl font-semobold mt-10'>Review from Other Learners</h2>
-            <ReviewSlider/>
-            
+        <h2 className="text-center text-4xl font-semobold mt-10">
+          Review from Other Learners
+        </h2>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ReviewSlider />
+        </Suspense>
       </div>
 
-
-
-      <Footer/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };

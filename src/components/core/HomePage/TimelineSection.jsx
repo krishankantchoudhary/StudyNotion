@@ -4,7 +4,7 @@ import Logo1 from "../../../assets/TimeLineLogo/Logo1.svg"
 import Logo2 from "../../../assets/TimeLineLogo/Logo2.svg"
 import Logo3 from "../../../assets/TimeLineLogo/Logo3.svg"
 import Logo4 from "../../../assets/TimeLineLogo/Logo4.svg"
-import timelineImage from "../../../assets/Images/TimelineImage.png"
+import timelineImage from "../../../assets/Images/TimelineImage.webp"
 
 const timeline = [
     {
@@ -58,6 +58,9 @@ const TimelineSection = () => {
 
             <img  src={timelineImage}
             alt="timelineImage"
+            width="350"
+  height="260"
+  loading="lazy"
             className='shadow-white object-cover h-fit'
             />
 

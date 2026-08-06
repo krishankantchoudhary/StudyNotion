@@ -1,6 +1,10 @@
 const express=require("express")
 const app=express();
 
+const dns = require("dns");
+
+dns.setDefaultResultOrder("ipv4first");
+
 const profileRoutes=require("./routes/Profile");
 const userRoutes=require("./routes/User");
 const paymentsRoutes=require("./routes/Payments");

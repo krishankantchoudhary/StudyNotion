@@ -6,67 +6,79 @@ const jwt=require("jsonwebtoken");
 const mailSender=require("../utils/mailSender");
 const Profile=require("../models/Profile");
 require("dotenv").config();
-const {passwordUpdated}=require("../mail/templates/passwordUpdate")
+const {passwordUpdated}=require("../mail/templates/passwordUpdate");
+
+const otpTemplate = require("../mail/templates/emailVerificationTemplate");
 
 
 //sendotp for email verification
-exports.sendOTP=async(req,res)=>{
-    try{
-        //fetch emial from req body
-        const{email}=req.body;
+exports.sendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
 
-        //check user already exists or not
-        const checkUser=await User.findOne({email});
-        if(checkUser){
-            return res.status(401).json({
-                success:false,
-                message:"User already registred",
-            })
-        }
+    // Check user already exists
+    const checkUser = await User.findOne({ email });
 
-        //generste otp
-        var otp=otpGenerator.generate(6,{
-            upperCaseAlphabets:false,
-            lowerCaseAlphabets:false,
-            specialChars:false,
-        });
-        console.log("otp is",otp)
-
-        //check otp is unique or not
-        const result=await OTP.findOne({otp:otp});
-        console.log("Result is Generate OTP Func");
-		console.log("OTP", otp);
-		console.log("Result", result);
-
-        while(result){
-            otp=otpGenerator.generate(6,{
-                upperCaseAlphabets:false,
-                lowerCaseAlphabets:false,
-                specialChars:false,
-            })
-           // result=await OTP.findOne({otp:otp})
-        }
-
-        // const otpPayload={email,otp}
-        //crate entry for OTP
-        const otpBody=await OTP.create({email,otp});
-        console.log("ye hai otp body:",otpBody);
-
-        return res.status(200).json({
-            success:true,
-            message:"OTP saved in db successfully",
-            otp,
-        })
-
-    }catch(error){
-        console.log(error);
-        res.status(500).json({
-            success:false,
-            message:"internal server isssue"
-        })
-
+    if (checkUser) {
+      return res.status(401).json({
+        success: false,
+        message: "User already registered",
+      });
     }
-}
+
+    // Generate OTP
+    let otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
+
+    console.log("Generated OTP:", otp);
+
+    // Ensure OTP is unique
+    let result = await OTP.findOne({ otp });
+
+    while (result) {
+      otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
+        specialChars: false,
+      });
+
+      result = await OTP.findOne({ otp });
+    }
+
+    // Save OTP in DB
+    const otpBody = await OTP.create({
+      email,
+      otp,
+    });
+
+    console.log("OTP Saved:", otpBody);
+
+    // Send Email
+    await mailSender(
+      email,
+      "Verification Email",
+      otpTemplate(otp)
+    );
+
+    console.log("OTP Mail Sent Successfully");
+
+    return res.status(200).json({
+      success: true,
+      message: "OTP Sent Successfully",
+    });
+
+  } catch (error) {
+    console.log("SEND OTP ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 
 //signup

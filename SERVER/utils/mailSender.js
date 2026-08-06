@@ -1,5 +1,9 @@
 const nodemailer=require("nodemailer")
 
+console.log("HOST:", process.env.MAIL_HOST);
+console.log("USER:", process.env.MAIL_USER);
+console.log("PASS:", process.env.MAIL_PASS ? "FOUND" : "MISSING");
+
 const mailSender=async(email,title,body)=>{
     try{
         console.log("Creating transporter");
@@ -19,7 +23,7 @@ const mailSender=async(email,title,body)=>{
             subject:`${title}`,
             html:`${body}`
         })
-        
+
         console.log("After sendMail", info);
 
         return info;

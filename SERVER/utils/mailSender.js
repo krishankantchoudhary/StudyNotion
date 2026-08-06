@@ -2,6 +2,7 @@ const nodemailer=require("nodemailer")
 
 const mailSender=async(email,title,body)=>{
     try{
+        console.log("Creating transporter");
         let transporter=nodemailer.createTransport({
             host:process.env.MAIL_HOST,
             auth:{
@@ -10,13 +11,17 @@ const mailSender=async(email,title,body)=>{
             }
         })
 
+        console.log("Before sendMail");
+
         let info=await transporter.sendMail({
             from: `"StudyNotion" <${process.env.MAIL_USER}>`,
             to:`${email}`,
             subject:`${title}`,
             html:`${body}`
         })
-        console.log("ye hai info:",info);
+        
+        console.log("After sendMail", info);
+
         return info;
 
     }catch(error){

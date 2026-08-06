@@ -8,7 +8,7 @@ exports.auth=async(req,res,next)=>{
 
     try{
 
-         // 🔥 YAHAN LAGAO (sabse upar)
+         // YAHAN LAGAO (sabse upar)
     console.log("HEADERS:", req.headers)
     console.log("COOKIES:", req.cookies)
     console.log("BODY:",    req.body)

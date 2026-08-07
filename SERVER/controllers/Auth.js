@@ -57,11 +57,16 @@ exports.sendOTP = async (req, res) => {
     console.log("OTP Saved:", otpBody);
 
     // Send Email
+    // await mailSender(
+    //   email,
+    //   "Verification Email",
+    //   otpTemplate(otp)
+    // );
     await mailSender(
-      email,
-      "Verification Email",
-      otpTemplate(otp)
-    );
+  email,
+  "Test Email",
+  "<h1>Hello from StudyNotion</h1>"
+);
 
     console.log("OTP Mail Sent Successfully");
 

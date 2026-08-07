@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 const nodemailer = require("nodemailer");
 
-const mailSender = async (email, title, body) => {
+async function test() {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -10,25 +12,24 @@ const mailSender = async (email, title, body) => {
       },
     });
 
+    console.log("Verifying SMTP...");
+
     await transporter.verify();
-    console.log("SMTP VERIFIED");
+
+    console.log("✅ SMTP Verified");
 
     const info = await transporter.sendMail({
       from: process.env.MAIL_USER,
-      to: email,
-      subject: title,
-      html: body,
+      to: process.env.MAIL_USER,
+      subject: "SMTP Test",
+      text: "Hello from StudyNotion",
     });
 
-    console.log("MAIL SENT");
-
-    return info;
+    console.log("✅ Mail Sent");
+    console.log(info);
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error("❌ Error:", err);
   }
-};
+}
 
-console.log(mailSender.toString());
-
-module.exports = mailSender;
+test();

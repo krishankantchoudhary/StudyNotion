@@ -22,7 +22,7 @@ async function test() {
       from: process.env.MAIL_USER,
       to: process.env.MAIL_USER,
       subject: "SMTP Test",
-      text: "Hello from StudyNotion",
+      text: "Hello from StudyNotiontest",
     });
 
     console.log("✅ Mail Sent");

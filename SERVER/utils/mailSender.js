@@ -29,6 +29,4 @@ const mailSender = async (email, title, body) => {
   }
 };
 
-console.log(mailSender.toString());
-
 module.exports = mailSender;

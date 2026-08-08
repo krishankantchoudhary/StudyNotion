@@ -8,7 +8,7 @@ const Profile=require("../models/Profile");
 require("dotenv").config();
 const {passwordUpdated}=require("../mail/templates/passwordUpdate");
 
-const otpTemplate = require("../mail/templates/emailVerificationTemplate");
+//const otpTemplate = require("../mail/templates/emailVerificationTemplate");
 
 
 //sendotp for email verification
@@ -57,16 +57,16 @@ exports.sendOTP = async (req, res) => {
     console.log("OTP Saved:", otpBody);
 
     //Send Email
+    // await mailSender(
+    //   email,
+    //   "Verification Email",
+    //   otpTemplate(otp)
+    // );
     await mailSender(
-      email,
-      "Verification Email",
-      otpTemplate(otp)
-    );
-//     await mailSender(
-//   email,
-//   "Test Email",
-//   "<h1>Hello from StudyNotion</h1>"
-// );
+  email,
+  "Test Email",
+  "<h1>Hello from StudyNotion krishuu</h1>"
+);
 
     console.log("OTP Mail Sent Successfully");
 
@@ -76,7 +76,7 @@ exports.sendOTP = async (req, res) => {
     });
 
   } catch (error) {
-    console.log("SEND OTP ERROR:", error);
+    console.log("SEND OTP ERROR:", error.message);
 
     return res.status(500).json({
       success: false,

@@ -7,7 +7,7 @@ const mailSender = async (email, title, body) => {
   port: Number(process.env.MAIL_PORT),
   secure: false,
       auth: {
-        user: process.env.MAIL_FROM,
+        user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
     });
@@ -16,7 +16,7 @@ const mailSender = async (email, title, body) => {
     console.log("SMTP VERIFIED");
 
     const info = await transporter.sendMail({
-      from: process.env.MAIL_USER,
+      from: process.env.MAIL_FROM,
       to: email,
       subject: title,
       html: body,

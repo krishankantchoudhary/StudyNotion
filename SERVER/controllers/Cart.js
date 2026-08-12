@@ -2,6 +2,9 @@ const Cart = require("../models/Cart");
 
 exports.cart = async(req,res)=>{
     try{
+         console.log("🔥 CART CONTROLLER HIT")
+    console.log("USER ID:", req.user.id)
+    console.log("COURSE ID:", req.body.courseId)
         const{courseId} = req.body;
         const userId = req.user.id;
 
@@ -50,6 +53,8 @@ exports.cart = async(req,res)=>{
 
 exports.getCart = async (req, res) => {
     try {
+         console.log("🔥 GET CART CONTROLLER HIT")
+        console.log("USER ID:", req.user.id)
         const userId = req.user.id;
 
         const cart = await Cart.findOne({ user: userId })

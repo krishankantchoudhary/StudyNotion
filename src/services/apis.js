@@ -1,5 +1,7 @@
 const BASE_URL = process.env.REACT_APP_BASE_URL
 
+console.log("BASE URL:", process.env.REACT_APP_BASE_URL)
+
 // AUTH ENDPOINTS
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/auth/sendotp",
@@ -69,4 +71,10 @@ export const settingsEndpoints = {
   UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
+}
+
+// CART ENDPOINTS
+export const cartEndpoints = {
+  ADD_TO_CART_API: BASE_URL + "/cart/addToCart",
+  GET_CART_API: BASE_URL + "/cart/getCart",
 }

@@ -7,6 +7,8 @@ import OpenRoute from "./components/core/Auth/OpenRoute";
 import { useDispatch, useSelector } from "react-redux";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import { ACCOUNT_TYPE } from "./utils/constants";
+import { getCart } from "./services/operations/cartAPI";
+import { setCart } from "./slices/cartSlice";
 
 const Home=lazy(()=>import ("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -37,14 +39,56 @@ function App() {
   const navigate=useNavigate();
 
   const {user} = useSelector((state)=>state.profile)
+  const { token } = useSelector((state) => state.auth)
+
+ useEffect(() => {
+    if (localStorage.getItem("token")) {
+
+        const token = JSON.parse(
+            localStorage.getItem("token")
+        )
+
+        dispatch(getUserDetails(token, navigate))
+
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [])
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = JSON.parse(localStorage.getItem("token"))
-      dispatch(getUserDetails(token, navigate))
+
+    if (token) {
+
+      getCart()
+        .then((response) => {
+
+          console.log("GET CART RESPONSE:", response)
+
+          if (response.success) {
+
+            console.log(
+              "COURSES FROM DB:",
+              response.data.courses
+            )
+
+            dispatch(
+              setCart(response.data.courses)
+            )
+          }
+
+        })
+        .catch((error) => {
+
+          console.log(
+            "Could not fetch cart:",
+            error
+          )
+
+        })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+
+  }, [token, dispatch])
+
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">

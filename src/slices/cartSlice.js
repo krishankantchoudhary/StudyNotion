@@ -17,6 +17,17 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (state, action) => {
+    state.cart = action.payload
+    state.totalItems = action.payload.length
+
+    state.total = action.payload.reduce(
+        (total, course) => total + course.price,
+        0
+    )
+},
+
+
     addToCart: (state, action) => {
       const course = action.payload
       const index = state.cart.findIndex((item) => item._id === course._id)
@@ -67,6 +78,6 @@ const cartSlice = createSlice({
   },
 })
 
-export const { addToCart, removeFromCart, resetCart } = cartSlice.actions
+export const { setCart, addToCart, removeFromCart, resetCart } = cartSlice.actions
 
 export default cartSlice.reducer

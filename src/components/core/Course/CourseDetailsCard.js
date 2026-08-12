@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom"
 import { addToCart } from "../../../slices/cartSlice"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
 
+import { addCourseToCart } from "../../../services/operations/cartAPI"
+
 // const CourseIncludes = [
 //   "8 hours on-demand video",
 //   "Full Lifetime access",
@@ -33,7 +35,16 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
     toast.success("Link copied to clipboard")
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async() => {
+     try {
+    const response = await addCourseToCart(course._id)
+
+    console.log("CART API RESULT:", response)
+
+  } catch (error) {
+    console.log("FAILED:", error)
+  }
+  
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
       toast.error("You are an Instructor. You can't buy a course.")
       return

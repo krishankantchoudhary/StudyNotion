@@ -53,9 +53,7 @@ const {
 // Importing Middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
 
-// ********************************************************************************************************
-//                                      Course routes
-// ********************************************************************************************************
+//Course routes
 
 // Courses can Only be Created by Instructors
 // router.post("/createCourse", (req,res,next)=>{
@@ -108,9 +106,7 @@ router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
 // Delete a Course
 router.delete("/deleteCourse", deleteCourse)
 
-// ********************************************************************************************************
-//                                      Category routes (Only by Admin)
-// ********************************************************************************************************
+//Category routes (Only by Admin)
 // Category can Only be Created by Admin
 // TODO: Put IsAdmin Middleware here
 router.post("/createCategory", (req,res,next)=>{

@@ -11,6 +11,7 @@ const userRoutes=require("./routes/User");
 const paymentsRoutes=require("./routes/Payments");
 const courseRoutes=require("./routes/Course");
 const contactUsRoute = require("./routes/Contact");
+const cartRoute = require("./routes/Cart");
 
 const dbConnect=require("./config/database");
 const cors=require("cors");
@@ -60,6 +61,7 @@ app.use("/api/v1/auth",userRoutes);
 app.use("/api/v1/payment",paymentsRoutes);
 app.use("/api/v1/course",courseRoutes);
 app.use("/api/v1/reach", contactUsRoute);
+app.use("/api/v1/cart", cartRoute);
 
 //default routes
 

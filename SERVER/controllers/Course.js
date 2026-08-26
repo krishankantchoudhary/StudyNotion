@@ -18,6 +18,7 @@ exports.createCourse = async (req, res) => {
       whatYouWillLearn,
       price,
       tag: _tag,
+      level,
       category,
       status,
       instructions: _instructions,
@@ -39,6 +40,7 @@ exports.createCourse = async (req, res) => {
       !tag.length ||
       !thumbnail ||
       !category ||
+      !level ||
       !instructions.length
     ) {
       return res.status(400).json({
@@ -87,6 +89,7 @@ exports.createCourse = async (req, res) => {
       price,
       tag,
       category: categoryDetails._id,
+      level,
       thumbnail: thumbnailImage.secure_url,
       status: status,
       instructions,

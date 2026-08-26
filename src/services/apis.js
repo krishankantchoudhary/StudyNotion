@@ -77,4 +77,5 @@ export const settingsEndpoints = {
 export const cartEndpoints = {
   ADD_TO_CART_API: BASE_URL + "/cart/addToCart",
   GET_CART_API: BASE_URL + "/cart/getCart",
+  REMOVE_FROM_CART_API: BASE_URL + "/cart/removefromCart"
 }

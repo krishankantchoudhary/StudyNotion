@@ -4,10 +4,29 @@ import ReactStars from "react-rating-stars-component"
 import { useDispatch, useSelector } from "react-redux"
 
 import { removeFromCart } from "../../../../slices/cartSlice"
+import { removeCourseFromCart } from "../../../../services/operations/cartAPI"
 
 export default function RenderCartCourses() {
   const { cart } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
+
+  const handleRemoveFromCart = async(courseId)=>{
+    try{
+       console.log("1. ID:", courseId)
+      const response = await removeCourseFromCart(courseId);
+      console.log("2. API RESPONSE:", response)
+
+       const action = removeFromCart(courseId)
+
+        console.log("3. ACTION:", action)
+
+      dispatch(action)
+      console.log("4. DISPATCH DONE")
+
+    }catch(error){
+      console.log("Failed to remove course:", error)
+    }
+  }
   return (
     <div className="flex flex-1 flex-col">
       {cart.map((course, indx) => (
@@ -49,7 +68,7 @@ export default function RenderCartCourses() {
           </div>
           <div className="flex flex-col items-end space-y-2">
             <button
-              onClick={() => dispatch(removeFromCart(course._id))}
+              onClick={() => handleRemoveFromCart(course._id)}
               className="flex items-center gap-x-1 rounded-md border border-richblack-600 bg-richblack-700 py-3 px-[12px] text-pink-200"
             >
               <RiDeleteBin6Line />

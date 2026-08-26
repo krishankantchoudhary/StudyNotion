@@ -426,10 +426,22 @@ exports.deleteCourse = async (req, res) => {
           await SubSection.findByIdAndDelete(subSectionId)
         }
       }
-
       // Delete the section
       await Section.findByIdAndDelete(sectionId)
     }
+
+    //Delete from category 
+    await Category.findByIdAndUpdate(
+      course.category,
+      {
+        $pull:{
+          courses:courseId
+        }
+      },
+      {
+        new:true
+      }
+    )
 
     // Delete the course
     await Course.findByIdAndDelete(courseId)

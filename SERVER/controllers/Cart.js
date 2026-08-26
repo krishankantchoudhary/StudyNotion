@@ -1,12 +1,20 @@
 const Cart = require("../models/Cart");
+const Course = require("../models/Course");
 
 exports.cart = async(req,res)=>{
     try{
-         console.log("🔥 CART CONTROLLER HIT")
-    console.log("USER ID:", req.user.id)
-    console.log("COURSE ID:", req.body.courseId)
         const{courseId} = req.body;
         const userId = req.user.id;
+
+        //courseId ke basis par course documnet m check karo ki ye course 
+        // h ya nhi phir bad m uska price lelenge
+        const course = await Course.findById(courseId);
+        if(!course){
+            return res.status(404).json({
+                success:false,
+                message:"Course not found"
+            });
+        }
 
         let cart = await Cart.findOne({user:userId});
 
@@ -31,6 +39,7 @@ exports.cart = async(req,res)=>{
         }
 
         cart.courses.push(courseId);
+        cart.totalAmount += course.price;
         await cart.save();
 
         res.status(200).json({
@@ -53,8 +62,7 @@ exports.cart = async(req,res)=>{
 
 exports.getCart = async (req, res) => {
     try {
-         console.log("🔥 GET CART CONTROLLER HIT")
-        console.log("USER ID:", req.user.id)
+        
         const userId = req.user.id;
 
         const cart = await Cart.findOne({ user: userId })
@@ -86,3 +94,92 @@ exports.getCart = async (req, res) => {
         });
     }
 };
+
+exports.removefromCart = async(req,res)=>{
+    try{
+    const{courseId}=req.body;
+    const userId = req.user.id;
+    console.log(courseId);
+
+    //1. userId se cart m iss user ko find kiya or populate kiya jisse courses ki details mil sake
+    // const cart = await Cart.findOne({user:userId}).populate("courses");
+
+    //2. cart m user tho hai but uske courses m ye course hai ya nhi?
+    // const course = cart.courses.find(
+    //     (course)=>course._id.toString() === courseId
+    // )
+
+    // if(!course){
+    //     return res.status(404).json({
+    //         success:false,
+    //         message:"Course is not in cart"
+    //     })
+    // }
+
+    // cart.courses.pull(courseId);
+    // cart.totalAmount -= course.price;
+
+    // if(cart.courses.length === 0){
+    //     cart.totalAmount = 0;
+    // }
+
+    // await cart.save();
+
+     // 1. Course DB mein check
+        const course = await Course.findById(courseId);
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found"
+            });
+        }
+
+    //check ki ye course DB m hai bhi hai nhi
+    const cart = await Cart.findOneAndUpdate(
+        {user:userId},
+        {
+            $pull:{
+                courses:courseId
+            }
+             
+        },
+        
+        {
+            new:true
+        }
+    )
+
+    if(!cart){
+        return res.status(404).json({
+            success:false,
+            message:"Course not found in DB"
+        })
+    }
+
+    if (cart.courses.length === 0) {
+    cart.totalAmount = 0;
+} else {
+    cart.totalAmount -= course.price;
+}
+    
+    // 4. DB mein save
+        await cart.save();
+
+   
+    res.status(200).json({
+        success:true,
+        message:"Course delete succesfully"
+    })
+
+    }catch(error){
+         console.log(error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+   
+    
+}

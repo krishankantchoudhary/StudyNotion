@@ -7,6 +7,7 @@ const { default: mongoose } = require("mongoose");
 const { paymentSuccessEmail } = require("../mail/templates/paymentSuccessEmail");
 const crypto = require("crypto");
 const CourseProgress = require("../models/CourseProgress")
+const Cart = require("../models/Cart")
 
 //initiate the razorpay order
 exports.capturePayment = async(req, res) => {
@@ -151,6 +152,27 @@ exports.verifyPayment = async (req, res) => {
 
         // Payment verified ✅
         await exports.enrollStudents(courses, userId);
+
+        // Remove purchased courses from cart ✅
+// await Cart.findOneAndUpdate(
+//     { user: userId },
+//     {
+//         $pull: {
+//             courses: { $in: courses }
+//         }
+//     },
+//     { new: true }
+// );
+await Cart.findOneAndUpdate(
+    { user: userId },
+    {
+        $set: {
+            courses: [],
+            totalAmount: 0
+        }
+    },
+    { new: true }
+);
 
         return res.status(200).json({
             success: true,
